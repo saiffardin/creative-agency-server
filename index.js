@@ -36,6 +36,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     const servicesCollection = client.db("creativeAgency").collection("services");
     const adminsCollection = client.db("creativeAgency").collection("admins");
+    const ordersCollection = client.db("creativeAgency").collection("orders");
+    const reviewsCollection = client.db("creativeAgency").collection("reviews");
 
     // add a service
     app.post('/addService', (req, res) => {
@@ -97,6 +99,22 @@ client.connect(err => {
     })
 
 
+    // srch single service
+    app.get('/findService/:service', (req, res) => {
+
+        const title = req.params.service;
+
+        console.log('title:', title)
+
+        servicesCollection.find({ title })
+            .toArray((err, docs) => {
+                console.log(docs);
+                res.send(docs[0]);
+            })
+    })
+
+
+
     // add an admin
     app.post('/addAdmin', (req, res) => {
         const admin = req.body;
@@ -110,10 +128,6 @@ client.connect(err => {
                 // console.log('mongoDB:', result);
                 res.send(result.insertedCount > 0);
             })
-
-
-
-        // res.send(admin);
     })
 
 
@@ -137,6 +151,77 @@ client.connect(err => {
 
                 }
             })
+    })
+
+
+    // add an order from client
+    app.post('/addOrder', (req, res) => {
+        const order = req.body;
+        console.log(order);
+
+        ordersCollection.insertOne(order)
+            .then(result => {
+                // console.log('mongoDB:', result);
+                res.send(result.insertedCount > 0);
+            })
+    })
+
+
+    // srch all orders of a client
+    app.get('/findOrders/:email', (req, res) => {
+        const email = req.params.email;
+        let clientOrders = [];
+        // console.log("find email:",email);
+
+        ordersCollection.find({ email })
+            .toArray((err, docs) => {
+                console.log();
+
+                docs.forEach(doc => {
+                    clientOrders.push(doc.service);
+                })
+                // console.log(clientOrders);
+                res.send(clientOrders);
+            })
+    })
+
+
+
+    // add review 
+    app.post('/addReview', (req, res) => {
+        const review = req.body;
+        // res.send(review);
+        // const email = admin.email;
+
+        console.log();
+        console.log('review:', review);
+
+        reviewsCollection.insertOne(review)
+            .then(result => {
+                // console.log('mongoDB:', result);
+                res.send(result.insertedCount > 0);
+            })
+    })
+
+
+    // load all reviews
+    app.get('/loadAllReviews', (req, res) => {
+        reviewsCollection.find({})
+            .toArray((err, docs) => {
+                // console.log(docs);
+                res.send(docs);
+            })
+
+    })
+
+    // load all ordersCollection
+    app.get('/loadAllOrders', (req, res) => {
+        ordersCollection.find({})
+            .toArray((err, docs) => {
+                // console.log(docs);
+                res.send(docs);
+            })
+
     })
 
     // client.close();
