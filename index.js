@@ -45,45 +45,45 @@ client.connect(err => {
         const title = req.body.title;
         const description = req.body.description;
 
-        const filePath = `${__dirname}/services/${img.name}`;
+        // const filePath = `${__dirname}/services/${img.name}`;
 
         // console.log(); console.log(title); console.log(description); console.log(img);
 
-        img.mv(filePath, err => {
-            if (err) {
-                console.log(err);
-                res.status(500).send({ msg: 'Failed to upload service image' });
-            }
+        // img.mv(filePath, err => {
+        // if (err) {
+        //     console.log(err);
+        //     res.status(500).send({ msg: 'Failed to upload service image' });
+        // }
 
-            const newImg = fs.readFileSync(filePath);
-            const encImg = newImg.toString('base64');
+        const newImg = req.files.img.data;
+        const encImg = newImg.toString('base64');
 
-            let image = {
-                contentType: img.mimetype,
-                size: img.size,
-                imgType: Buffer.from(encImg, 'base64')
-            };
+        let image = {
+            contentType: img.mimetype,
+            size: img.size,
+            imgType: Buffer.from(encImg, 'base64')
+        };
 
-            servicesCollection.insertOne({ title, description, img: image })
-                .then(result => {
-                    fs.remove(filePath, error => {
-                        if (error) {
-                            console.log(error);
-                            res.status(500).send({ msg: 'Failed to upload service image' });
+        servicesCollection.insertOne({ title, description, img: image })
+            .then(result => {
+                // fs.remove(filePath, error => {
+                //     if (error) {
+                //         console.log(error);
+                //         res.status(500).send({ msg: 'Failed to upload service image' });
 
-                        }
-
-
-                        console.log();
-                        console.log('data inserted into service - successfully');
-                        // res.send(result.insertedCount > 0);
-                        res.send({ name: img.name, path: `/${img.name}` });
-
-                    })
-                })
+                //     }
 
 
-        });
+                console.log();
+                console.log('data inserted into service - successfully');
+                res.send(result.insertedCount > 0);
+                // res.send({ name: img.name, path: `/${img.name}` });
+
+                // })
+            })
+
+
+        // });
 
     })
 
