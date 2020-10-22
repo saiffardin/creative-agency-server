@@ -5,13 +5,14 @@ const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 
 
-const fileUpload = require('express-fileUpload');
+const fileUpload = require('express-fileupload');
 const fs = require('fs-extra');
 
 // -------------------------------------------
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('services'));
 app.use(fileUpload());
