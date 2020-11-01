@@ -26,7 +26,7 @@ const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-sh
 // -------------------------------------------
 
 app.get('/', (req, res) => {
-    res.send("hello from db. It's working fine");
+    res.send("Updated. It's working fine");
 })
 
 
