@@ -14,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static('services'));
+
 app.use(fileUpload());
 
 const port = 5000;
@@ -40,21 +40,15 @@ client.connect(err => {
     const ordersCollection = client.db("creativeAgency").collection("orders");
     const reviewsCollection = client.db("creativeAgency").collection("reviews");
 
+
+    // --------------------------------------------------------------------- SERVICES - start
+
     // add a service
     app.post('/addService', (req, res) => {
         const img = req.files.img;
         const title = req.body.title;
         const description = req.body.description;
 
-        // const filePath = `${__dirname}/services/${img.name}`;
-
-        // console.log(); console.log(title); console.log(description); console.log(img);
-
-        // img.mv(filePath, err => {
-        // if (err) {
-        //     console.log(err);
-        //     res.status(500).send({ msg: 'Failed to upload service image' });
-        // }
 
         const newImg = req.files.img.data;
         const encImg = newImg.toString('base64');
@@ -67,20 +61,11 @@ client.connect(err => {
 
         servicesCollection.insertOne({ title, description, img: image })
             .then(result => {
-                // fs.remove(filePath, error => {
-                //     if (error) {
-                //         console.log(error);
-                //         res.status(500).send({ msg: 'Failed to upload service image' });
-
-                //     }
-
 
                 console.log();
                 console.log('data inserted into service - successfully');
                 res.send(result.insertedCount > 0);
-                // res.send({ name: img.name, path: `/${img.name}` });
 
-                // })
             })
 
 
@@ -114,7 +99,12 @@ client.connect(err => {
             })
     })
 
+    // --------------------------------------------------------------------- SERVICES - end
 
+
+
+
+    // --------------------------------------------------------------------- ADMIN - starts
 
     // add an admin
     app.post('/addAdmin', (req, res) => {
@@ -155,6 +145,12 @@ client.connect(err => {
     })
 
 
+    // --------------------------------------------------------------------- ADMIN - ends
+
+
+
+    // --------------------------------------------------------------------- ORDER - starts
+
     // add an order from client
     app.post('/addOrder', (req, res) => {
         const order = req.body;
@@ -187,6 +183,22 @@ client.connect(err => {
     })
 
 
+    // load all ordersCollection
+    app.get('/loadAllOrders', (req, res) => {
+        ordersCollection.find({})
+            .toArray((err, docs) => {
+                // console.log(docs);
+                res.send(docs);
+            })
+
+    })
+
+
+    // --------------------------------------------------------------------- ORDER - ends
+
+
+
+    // --------------------------------------------------------------------- REVIEW - starts
 
     // add review 
     app.post('/addReview', (req, res) => {
@@ -215,15 +227,10 @@ client.connect(err => {
 
     })
 
-    // load all ordersCollection
-    app.get('/loadAllOrders', (req, res) => {
-        ordersCollection.find({})
-            .toArray((err, docs) => {
-                // console.log(docs);
-                res.send(docs);
-            })
 
-    })
+    // --------------------------------------------------------------------- REVIEW - ends
+
+
 
     // client.close();
 })
