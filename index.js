@@ -179,13 +179,12 @@ client.connect(err => {
 
                     servicesCollection.find({ title })
                         .toArray((err, services) => {
-
                             clientOrders.push(services[0]);
                         })
                 })
-                // console.log(clientOrders);
+                console.log(clientOrders);
+                console.log('print hoi ?');
                 res.send(clientOrders);
-
 
             })
 
