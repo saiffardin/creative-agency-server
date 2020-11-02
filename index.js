@@ -183,7 +183,7 @@ client.connect(err => {
                         })
                 })
                 console.log(clientOrders);
-                console.log('print hoi ?');
+                // console.log('print hoi ?')
                 res.send(clientOrders);
 
             })
