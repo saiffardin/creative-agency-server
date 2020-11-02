@@ -154,7 +154,7 @@ client.connect(err => {
     // add an order from client
     app.post('/addOrder', (req, res) => {
         const order = req.body;
-        console.log(order);
+        // console.log(order);
 
         ordersCollection.insertOne(order)
             .then(result => {
@@ -177,27 +177,8 @@ client.connect(err => {
                 docs.forEach(doc => {
                     clientOrders.push(doc.service);
                 })
-                // console.log(clientOrders);
-                // res.send(clientOrders);
-            })
-            .then((response) => {
-
-                let orderDetail = [];
-
-                clientOrders.forEach(order => {
-
-                    title = order;
-                    servicesCollection.find({ title })
-                        .toArray((err, docs) => {
-                            console.log(docs);
-                            // res.send(docs[0]);
-                            orderDetail.push(docs[0]);
-
-                        })
-
-                })
-
-                res.send(orderDetail);
+                console.log(clientOrders);
+                res.send(clientOrders);
             })
     })
 
