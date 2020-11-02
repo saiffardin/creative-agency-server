@@ -99,7 +99,6 @@ client.connect(err => {
             })
     })
 
-
     // --------------------------------------------------------------------- SERVICES - end
 
 
@@ -169,26 +168,18 @@ client.connect(err => {
     app.get('/findOrders/:email', (req, res) => {
         const email = req.params.email;
         let clientOrders = [];
-        
+        // console.log("find email:",email);
+
         ordersCollection.find({ email })
             .toArray((err, docs) => {
                 console.log();
 
                 docs.forEach(doc => {
-                    const title = doc.service;
-
-                    servicesCollection.find({ title })
-                        .toArray((err, services) => {
-                            clientOrders.push(services[0]);
-                        })
+                    clientOrders.push(doc.service);
                 })
-                console.log(clientOrders);
-                // console.log('print hoi ?')
+                // console.log(clientOrders);
                 res.send(clientOrders);
-
             })
-
-
     })
 
 
@@ -243,8 +234,6 @@ client.connect(err => {
 
     // client.close();
 })
-
-
 
 
 
