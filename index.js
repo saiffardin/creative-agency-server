@@ -178,7 +178,26 @@ client.connect(err => {
                     clientOrders.push(doc.service);
                 })
                 // console.log(clientOrders);
-                res.send(clientOrders);
+                // res.send(clientOrders);
+            })
+            .then((response) => {
+
+                let orderDetail = [];
+
+                clientOrders.forEach(order => {
+
+                    title = order;
+                    servicesCollection.find({ title })
+                        .toArray((err, docs) => {
+                            console.log(docs);
+                            // res.send(docs[0]);
+                            orderDetail.push(docs[0]);
+
+                        })
+
+                })
+
+                res.send(orderDetail);
             })
     })
 
