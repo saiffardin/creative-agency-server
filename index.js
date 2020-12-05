@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
+
+
 require('dotenv').config();
 
 
@@ -26,7 +29,7 @@ const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-sh
 // -------------------------------------------
 
 app.get('/', (req, res) => {
-    res.send("saif");
+    res.send("saif fardin");
 })
 
 
@@ -148,6 +151,33 @@ client.connect(err => {
     // --------------------------------------------------------------------- ADMIN - ends
 
 
+    // --------------------------------------------------------------------- Update Status - starts
+
+
+    // update STATUS of an order by admin
+    app.patch('/updateStatus/:id', (req, res) => {
+        // console.log(req.body);
+        // console.log("id:",req.params.id);
+
+        ordersCollection.updateOne(
+            { _id: ObjectID(req.params.id) },
+            {
+                $set: {
+                    status: req.body.status,
+                }
+            }
+        )
+            .then(result => {
+                // console.log(result.modifiedCount>0);
+                res.send(result.modifiedCount>0);
+            })
+    })
+
+
+    // --------------------------------------------------------------------- Update Status - ends
+
+
+
 
     // --------------------------------------------------------------------- ORDER - starts
 
@@ -163,6 +193,20 @@ client.connect(err => {
             })
     })
 
+
+    // get a single order by id
+    // app.get('/findSingleOrder/:id', (req, res) => {
+
+    //     // let clientOrders = [];
+    //     // console.log("find email:",email);
+
+    //     ordersCollection.find({ _id: ObjectID(req.params.id) })
+    //         .toArray((err, docs) => {
+    //             console.log();
+    //             console.log(docs[0]);
+    //             res.send(docs[0]);
+    //         })
+    // })
 
     // srch all orders of a client
     app.get('/findOrders/:email', (req, res) => {
