@@ -18,31 +18,19 @@ app.use(fileUpload());
 const {client} = require('./utils/dbClient')
 const port = 5000;
 
+
 // DB handler
 client.connect(err => {
-    const {addService, loadAllServices, getServiceByTitle} = require('./controllers/services.controller');
-    const {addAdmin, findAdminByEmail} = require("./controllers/admin.controller");
-    const {addOrder, updateOrderStatusById, findOrdersByEmail, loadAllOrders} = require("./controllers/orders.controller");
-    const {addReview, loadAllReviews} = require("./controllers/reviews.controller");
+    const {serviceRouter} = require('./routes/service.routes');
+    const {adminRouter} = require('./routes/admin.routes');
+    const {orderRouter} = require('./routes/order.routes');
+    const {reviewRouter} = require('./routes/review.routes');
 
-    // SERVICES 
-    app.post('/addService', addService);
-    app.get('/loadAll', loadAllServices);
-    app.get('/findService/:service', getServiceByTitle)
+    serviceRouter(app);
+    adminRouter(app);
+    orderRouter(app)
+    reviewRouter(app)
 
-    // ADMIN
-    app.post('/addAdmin', addAdmin)
-    app.get('/findAdmin/:email', findAdminByEmail)
-
-    // ORDER
-    app.patch('/updateStatus/:id', updateOrderStatusById)
-    app.post('/addOrder', addOrder)
-    app.get('/findOrders/:email', findOrdersByEmail)
-    app.get('/loadAllOrders', loadAllOrders)
-
-    // REVIEW 
-    app.post('/addReview', addReview)
-    app.get('/loadAllReviews', loadAllReviews)
 })
 
 app.listen(process.env.PORT || port);
