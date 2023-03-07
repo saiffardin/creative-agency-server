@@ -1,4 +1,3 @@
-const {client} = require('../utils/dbClient')
 const {servicesCollection} = require('../utils/dbCollections')
 
 
