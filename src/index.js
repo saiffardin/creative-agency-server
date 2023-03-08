@@ -1,19 +1,16 @@
-// temp
 require('dotenv').config();
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 
 
 const app = express();
 app.use(cors());
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
-
-app.use(fileUpload());
 
 const {client} = require('./utils/dbClient')
 const port = 5000;
