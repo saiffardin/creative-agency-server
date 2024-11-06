@@ -17,15 +17,12 @@ const addService = (req, res) => {
   servicesCollection
     .insertOne({ title, description, img: image })
     .then((result) => {
-      console.log();
-      console.log("data inserted into service - successfully");
       res.send(result.insertedCount > 0);
     });
 };
 
 const loadAllServices = (req, res) => {
   servicesCollection.find({}).toArray((err, docs) => {
-    // console.log(docs);
     res.send(docs);
   });
 };
@@ -33,10 +30,7 @@ const loadAllServices = (req, res) => {
 const getServiceByTitle = (req, res) => {
   const title = req.params.service;
 
-  console.log("title:", title);
-
   servicesCollection.find({ title }).toArray((err, docs) => {
-    console.log(docs);
     res.send(docs[0]);
   });
 };

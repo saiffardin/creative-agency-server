@@ -1,3 +1,4 @@
+const { URLS } = require("../constants/urls");
 const {
   addService,
   loadAllServices,
@@ -5,9 +6,9 @@ const {
 } = require("../controllers/services.controller");
 
 const serviceRouter = (app) => {
-  app.post("/addService", addService);
-  app.get("/loadAll", loadAllServices);
-  app.get("/findService/:service", getServiceByTitle);
+  app.post(URLS.ADD_SERVICE, addService);
+  app.get(URLS.LOAD_ALL, loadAllServices);
+  app.get(URLS.FIND_SERVICE_BY_ID, getServiceByTitle);
 };
 
 module.exports = { serviceRouter };
