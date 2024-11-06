@@ -1,4 +1,4 @@
-export const URLS = {
+const URLS = {
   // adminRouter
   ADD_ADMIN: "/addAdmin",
   FIND_ADMIN_BY_EMAIL: "/findAdmin/:email",
@@ -18,3 +18,5 @@ export const URLS = {
   LOAD_ALL: "/loadAll",
   FIND_SERVICE_BY_ID: "/findService/:service",
 };
+
+module.exports = { URLS };
