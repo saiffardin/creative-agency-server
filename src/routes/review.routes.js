@@ -1,9 +1,11 @@
-const {addReview, loadAllReviews} = require('../controllers/reviews.controller');
+const {
+  addReview,
+  loadAllReviews,
+} = require("../controllers/reviews.controller");
 
 const reviewRouter = (app) => {
-    app.post('/addReview', addReview)
-    app.get('/loadAllReviews', loadAllReviews)
-}
+  app.post("/addReview", addReview);
+  app.get("/loadAllReviews", loadAllReviews);
+};
 
-module.exports = {reviewRouter}
-
+module.exports = { reviewRouter };
